@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <div id="black">
+        <div id="dvd">
+            <!-- <p>CHOOSE YOUR FIGHTER
+                Click any MEME below to start!</p> -->
+            <p style="font-size: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin: 0;">CHOOSE YOUR FIGHTER</p>
+            <!-- <br><br> -->
+            <!-- <p style="font-size: 1.5em; margin: 0;">Click any MEME below to start!</p> -->
+            <!-- <p>Click any MEME below to start!</p> -->
+        </div>
+
+    </div>
+
+    <div id="dvd-image">
+    </div>
+
+    <meta charset="UTF-8">
+    <title>Brainrot Dectector!!</title>
+    <style>
+        #dvdContainer {
+    position: fixed;  /* Changed from absolute - covers whole screen */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 10;  /* Above everything */
+}
+
+.dvdImage {
+    position: absolute;
+    width: 120px;
+    height: auto;
+    z-index: 15;  /* Above everything */
+    pointer-events: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+
+
+        body {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        body.fade-in {
+            opacity: 1;
+        }
+
+        body.fade-out {
+            opacity: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            font-family: 'Italianno', italic;
+            background-image: url('First page.jpg');
+            /* <-- CHANGE THIS */
+            background-size: cover;
+            background-position: center;
+            /* background-repeat: no-repeat; */
+            /* overflow: hidden; */
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 0;
+        }
+
+        #introPage {
+            position: center;
+            z-index: 1;
+            text-align: center;
+            color: white;
+            padding-top: 50px;
+        }
+
+        /* 
+        #introPage h1 {
+            position: center;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        #introPage p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        } */
+        @keyframes rotateClockAnti {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            to {
+                transform: translate(-50%, -50%) rotate(-360deg);
+            }
+        }
+
+        #clockContainer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            height: 500px;
+            margin-top: -20px;
+
+            animation: rotateClockAnti 10s linear infinite;
+        }
+
+        .clock-image {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .clock-image:hover {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 8px 25px rgba(255, 51, 51, 0.4);
+        }
+
+
+
+        #mainApp {
+            display: none;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            margin-top: 50px;
+            color: white;
+        }
+
+        #mainApp input,
+        #mainApp button {
+            padding: 10px;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        #mainApp {
+            display: none;
+            /* hidden at first */
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            margin: 0;
+            /* remove margin for full screen */
+            height: 100vh;
+            /* full viewport height */
+            width: 100vw;
+            /* full viewport width */
+            background-image: url('secondbg.jpg');
+            /* <-- change this to your file */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: rgb(238, 1, 1);
+            /* text color */
+        }
+
+        #chosenImage {
+            position: absolute;
+            width: 120px;
+            height: auto;
+            border-radius: 10px;
+            display: none;
+            z-index: 5;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #ff3333;
+        }
+
+        @keyframes zigzag {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            10% {
+                transform: translate(-20px, -10px) rotate(-1deg);
+            }
+
+            20% {
+                transform: translate(20px, 10px) rotate(1deg);
+            }
+
+            30% {
+                transform: translate(-16px, 8px) rotate(-0.8deg);
+            }
+
+            40% {
+                transform: translate(16px, -8px) rotate(0.8deg);
+            }
+
+            50% {
+                transform: translate(-10px, 6px) rotate(-0.5deg);
+            }
+
+            60% {
+                transform: translate(10px, -6px) rotate(0.5deg);
+            }
+
+            70% {
+                transform: translate(-5px, 3px) rotate(-0.3deg);
+            }
+
+            80% {
+                transform: translate(5px, -3px) rotate(0.3deg);
+            }
+
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+        }
+
+        @keyframes invertBlink {
+            0% {
+                filter: invert(0) hue-rotate(0deg);
+            }
+
+            10% {
+                filter: invert(1) hue-rotate(180deg);
+            }
+
+            20% {
+                filter: invert(0) hue-rotate(0deg);
+            }
+
+            30% {
+                filter: invert(1) hue-rotate(90deg);
+            }
+
+            40% {
+                filter: invert(0) hue-rotate(0deg);
+            }
+
+            50% {
+                filter: invert(1) hue-rotate(270deg);
+            }
+
+            60% {
+                filter: invert(0) hue-rotate(0deg);
+            }
+
+            70% {
+                filter: invert(1) hue-rotate(45deg);
+            }
+
+            80% {
+                filter: invert(0) hue-rotate(0deg);
+            }
+
+            90% {
+                filter: invert(1) hue-rotate(200deg);
+            }
+
+            100% {
+                filter: invert(0) hue-rotate(0deg);
+            }
+        }
+
+        .zigzag {
+            animation:
+                zigzag 0.7s infinite linear,
+                invertBlink 1.67s infinite steps(1);
+        }
+
+
+
+        /* This creates the box for the second page */
+        .input-card {
+            background: rgba(0, 0, 0, 0.8);
+            /* Dark semi-transparent box */
+            padding: 40px;
+            border-radius: 20px;
+            display: inline-block;
+            border: 2px solid #ff3333;
+            box-shadow: 0 0 20px rgba(255, 51, 51, 0.5);
+            max-width: 500px;
+        }
+
+        #clockHand {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80px;
+            /* Adjust size based on your image */
+            height: 80px;
+            /* Adjust size based on your image */
+
+            /* This makes the image spin from its bottom center */
+            transform-origin: bottom center;
+
+            /* Centers the hand perfectly in the middle of the container */
+            margin-left: -27.5px;
+            /* Must be half of the width */
+            margin-top: -65px;
+            /* Must be the full height */
+
+            z-index: 10;
+            pointer-events: none;
+
+            /* Animation stays the same */
+            animation: spinClock 2.67s linear infinite;
+        }
+
+        @keyframes spinClock {
+            from {
+                transform: rotate(0deg) translateY(-120px);
+            }
+
+            to {
+                transform: rotate(360deg) translateY(-120px);
+            }
+        }
+
+        /* #dvd {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            height: 50px;
+            width: 100px; */
+        /* mask: url("https://upload.wikimedia.org/wikipedia/commons/9/9b/DVD_logo.svg");
+            -webkit-mask: url("https://upload.wikimedia.org/wikipedia/commons/9/9b/DVD_logo.svg"); */
+        /* background-repeat: no-repeat;
+            background-size: 75px;
+            background-position: center;
+        } */
+
+        #dvd {
+            position: absolute;
+            /* JS is changing left/top */
+            padding: 20px 40px;
+            /* size of the box */
+            color: white;
+            /* text color */
+            font-size: 2rem;
+            /* text size */
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            /* optional rounded corners */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <audio id="brainrotTheme"> -->
+    <audio id="brainrotTheme" <source src="charlie-kirk.mp3" type="audio/mpeg">
+    </audio>
+    <!-- Intro Page -->
+    <!-- <div id="black">
+        <div id="dvd"> -->
+    <!-- <h1 style="font-size: 3em; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 10px;">CHOOSE YOUR
+                FIGHTER
+            </h1>
+            <p style="font-size: 1.5em; margin-bottom: 40px;">Click any MEME below to start!</p> -->
+    <!-- </div>
+    </div> -->
+
+    <div id="introPage">
+        <!-- <h1 style="font-size: 3em; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 10px;">CHOOSE YOUR FIGHTER
+        </h1>
+        <p style="font-size: 1.5em; margin-bottom: 40px;">Click any MEME below to start!</p> -->
+        <div id="dvd">
+            <!-- <h1>CHOOSE YOUR FIGHTER</h1> -->
+            <!-- <p>Click any MEME below to start!</p> -->
+        </div>
+        <div id="clockContainer">
+            <div id="clockHand">
+                <img src="hand.png" alt="hand" style="width: 100%; height: 100%;">
+
+            </div>
+
+        </div>
+
+        <!-- <h1>CHOOSE YOUR FIGHTER</h1>
+        <p>Click any MEME below to start!</p> -->
+
+        <!-- Clock Images -->
+        <div id="clockContainer">
+            <img src="twin.jpg" class="clock-image" alt="1">
+            <img src="confused.jpg" class="clock-image" alt="2">
+            <img src="speed.jpg" class="clock-image" alt="3">
+            <img src="sigma.jpg" class="clock-image" alt="4">
+            <img src="minion.jpg" class="clock-image" alt="5">
+            <img src="crying.jpg" class="clock-image" alt="6">
+            <img src="patrick.jpg" class="clock-image" alt="7">
+            <img src="sahur.jpg" class="clock-image" alt="8">
+            <img src="fighting.jpg" class="clock-image" alt="9">
+            <img src="crashout.jpg" class="clock-image" alt="10">
+            <img src="scared.jpg" class="clock-image" alt="11">
+            <img src="laughing.jpg" class="clock-image" alt="12">
+        </div>
+    </div>
+
+
+    <!-- Main App Page -->
+    <div id="mainApp">
+        <h1 style="font-size: 30px; margin-bottom: 0px; margin-top: 10px;">HOW BRAINROT ARE YOU? 🤔🤔🤔🤫🤫</h1>
+        <p style="font-size: 25px; margin-bottom: 0px; margin-top: 0px;">Type something and see the surprise 😈😈😈</p>
+        <!-- <p>Type something and see the surprise 😈😈😈 </p> -->
+
+        <div id="dvdContainer"></div>
+
+
+        <input type="text" id="userText" placeholder="Enter text here">
+        <br>
+        <button onclick="calculateBrainrot()">LET'S SEE!😈😈 </button>
+
+        <div id="result"></div>
+
+        <!-- Placeholder for clicked image -->
+        <div id="chosenImageContainer" style="margin-top: 20px;">
+            <img id="chosenImage" src="" alt="Your chosen" style="max-width:200px; border-radius:10px; display:none;">
+        </div>
+    </div>
+
+
+
+    <script>
+
+        // Fade in on page load
+        window.addEventListener("load", () => {
+            document.body.classList.add("fade-in");
+        });
+
+        // Intercept link clicks for fade-out
+        document.querySelectorAll("a").forEach(link => {
+            link.addEventListener("click", e => {
+                const href = link.getAttribute("href");
+
+                // Ignore anchors and new tabs
+                if (!href || href.startsWith("#") || link.target === "_blank") return;
+
+                e.preventDefault();
+                document.body.classList.remove("fade-in");
+                document.body.classList.add("fade-out");
+
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 500); // must match CSS transition time
+            });
+        });
+
+        let x = 0,
+            y = 0,
+            dirX = 1,
+            dirY = 1;
+        const speed = 2;
+        const pallete = ["#ff8800", "#e124ff", "#6a19ff", "#ff2188"];
+        let dvd = document.getElementById("dvd");
+        dvd.style.backgroundColor = pallete[0];
+        let prevColorChoiceIndex = 0;
+        let black = document.getElementById("black");
+        const dvdWidth = dvd.clientWidth;
+        const dvdHeight = dvd.clientHeight;
+
+        function getNewRandomColor() {
+            const currentPallete = [...pallete]
+            currentPallete.splice(prevColorChoiceIndex, 1)
+            const colorChoiceIndex = Math.floor(Math.random() * currentPallete.length);
+            prevColorChoiceIndex = colorChoiceIndex < prevColorChoiceIndex ? colorChoiceIndex : colorChoiceIndex + 1;
+            const colorChoice = currentPallete[colorChoiceIndex];
+            return colorChoice;
+        }
+        function animate() {
+            const screenHeight = document.body.clientHeight;
+            const screenWidth = document.body.clientWidth;
+
+            if (y + dvdHeight >= screenHeight || y < 0) {
+                dirY *= -1;
+                dvd.style.backgroundColor = getNewRandomColor();
+            }
+            if (x + dvdWidth >= screenWidth || x < 0) {
+                dirX *= -1;
+
+                dvd.style.backgroundColor = getNewRandomColor();
+            }
+            x += dirX * speed;
+            y += dirY * speed;
+            dvd.style.left = x + "px";
+            dvd.style.top = y + "px";
+            window.requestAnimationFrame(animate);
+        }
+
+        const dvdImages = [];
+        const DVD_COUNT = 6;
+
+//         function spawnDVDImages(src) {
+            
+//             const container = document.getElementById("dvdContainer");
+//             container.innerHTML = "";
+//             dvdImages.length = 0;
+
+//             for (let i = 0; i < DVD_COUNT; i++) {
+//                 const img = document.createElement("img");
+//                 img.src = src;
+// img.className = "dvdImage";
+//                 const x = Math.random() * (window.innerWidth - 120);
+//                 const y = Math.random() * (window.innerHeight - 120);
+
+//                 const dx = (Math.random() > 0.5 ? 1 : -1) * (1 + Math.random() * 2);
+//                 const dy = (Math.random() > 0.5 ? 1 : -1) * (1 + Math.random() * 2);
+
+                
+// img.style.position = 'absolute';
+// img.style.left = '0px'; // or Math.random() * (window.innerWidth - 120) + 'px';
+// img.style.top = '0px';  // Ensures visibility before animation
+// img.style.display = 'block'; // Force show
+
+//                 container.appendChild(img);
+
+//                 dvdImages.push({ img, x, y, dx, dy });
+//             }
+//         }
+function spawnDVDImages(src) {
+    const container = document.getElementById("dvdContainer");
+    container.innerHTML = "";
+    dvdImages.length = 0;
+
+    for (let i = 0; i < DVD_COUNT; i++) {
+        const img = document.createElement("img");
+        img.src = src;
+        img.className = "dvdImage";  // ✅ Use dvdImage class
+
+        // Generate positions ONCE for both styling AND data storage
+        const x = Math.random() * (window.innerWidth - 120);
+        const y = Math.random() * (window.innerHeight - 120);
+        const dx = (Math.random() > 0.5 ? 1 : -1) * (1 + Math.random() * 2);
+        const dy = (Math.random() > 0.5 ? 1 : -1) * (1 + Math.random() * 2);
+
+        // Apply to BOTH style and data object
+        img.style.left = x + "px";
+        img.style.top = y + "px";
+        img.style.display = 'block';
+
+        container.appendChild(img);
+        dvdImages.push({ img, x, y, dx, dy });  // Now matches style exactly
+    }
+}
+
+
+        function animateDVD() {
+            const container = document.getElementById("dvdContainer");
+
+            dvdImages.forEach(dvd => {
+                const rect = dvd.img.getBoundingClientRect();
+
+                dvd.x += dvd.dx;
+                dvd.y += dvd.dy;
+
+                if (dvd.x <= 0 || dvd.x + rect.width >= window.innerWidth) {
+                    dvd.dx *= -1;
+                }
+
+                if (dvd.y <= 0 || dvd.y + rect.height >= window.innerHeight) {
+                    dvd.dy *= -1;
+                }
+
+                dvd.img.style.left = dvd.x + "px";
+                dvd.img.style.top = dvd.y + "px";
+            });
+
+            requestAnimationFrame(animateDVD);
+        }
+
+
+
+
+        window.requestAnimationFrame(animate);
+        const brainrotWords = [
+            "sigma", "meow", "skibidi", "rizz", "gyatt", "fanum", "ohio",
+            "mewing", "mog", "grimace", "aura", "looksmax", "pookie", "67", "six seven", "six-seven",
+            "lowkirkenuinely", "lowkenuinely", "down", "bad", "flow state", "goated", "sus", "sussy", "goated",
+            "mid", "bussin", "mid", "lowkey", "unc", "bruh", "crash out", "looksmaxxing", "maxxing", "zesty", "lowkey",
+            "kirk", "charlie", "uwu", "deadass", "goofy", "mewing", "cooked", "alpha", "blud", "we are charlie kirk"
+        ];
+
+        const images = document.querySelectorAll(".clock-image");
+        const total = images.length;
+        const radius = 300;
+
+        images.forEach((img, i) => {
+            const angle = (i / total) * 2 * Math.PI - Math.PI / 2;
+            const x = Math.cos(angle) * radius;
+            const y = Math.sin(angle) * radius;
+
+            img.style.left = `calc(50% + ${x}px - 35px)`;
+            img.style.top = `calc(50% + ${y}px - 35px)`;
+
+      //      ✅ CLICKING WORKS - goes to second page
+            img.addEventListener("click", () => {
+                document.getElementById("introPage").style.display = "none";
+                document.getElementById("mainApp").style.display = "block";
+                const chosen = document.getElementById("chosenImage");
+                chosen.src = img.src;
+                chosen.style.display = "block";
+                imgX = Math.random() * (window.innerWidth - 150);
+                imgY = Math.random() * (window.innerHeight - 150);
+                bounceChosenImage();
+                
+                
+                // Spawn 6 DVD images on main page
+                spawnDVDImages(chosen.src);
+
+                // Start animating them
+                animateDVD();
+            });
+
+            // img.addEventListener("click", () => {
+            //     // Hide intro page, show main page
+            //     document.getElementById("introPage").style.display = "none";
+            //     document.getElementById("mainApp").style.display = "block";
+
+            //     // Set the chosen image
+            //     const chosen = document.getElementById("chosenImage");
+            //     chosen.src = img.src;
+            //     chosen.style.display = "block";
+
+            // });
+
+        });
+
+        // ===== DVD BOUNCING FOR CHOSEN IMAGE =====
+        let imgX = 100;
+        let imgY = 100;
+        let imgDirX = 1;
+        let imgDirY = 1;
+        const imgSpeed = 3;
+
+        function bounceChosenImage() {
+            const img = document.getElementById("chosenImage");
+            if (img.style.display === "none") return;
+
+            const screenW = window.innerWidth;
+            const screenH = window.innerHeight;
+            const imgW = img.offsetWidth;
+            const imgH = img.offsetHeight;
+
+            if (imgX + imgW >= screenW || imgX <= 0) imgDirX *= -1;
+            if (imgY + imgH >= screenH || imgY <= 0) imgDirY *= -1;
+
+            imgX += imgDirX * imgSpeed;
+            imgY += imgDirY * imgSpeed;
+
+            img.style.left = imgX + "px";
+            img.style.top = imgY + "px";
+
+            requestAnimationFrame(bounceChosenImage);
+        }
+
+        function calculateBrainrot() {
+            const text = document.getElementById("userText").value.toLowerCase();
+            if (!text) {
+                alert("are you forgetting something?? 🤔🤔");
+                return;
+            }
+
+            let score = 0;
+            let wordsFound = 0;
+
+            brainrotWords.forEach(word => {
+                if (text.includes(word) || text.toLowerCase().includes(word.toLowerCase())) {
+                    score += 25;
+                    wordsFound++;
+                }
+
+
+            });
+
+            const capsCount = (text.match(/[A-Z]/g) || []).length;
+            const emojiCount = (text.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g) || []).length;
+
+            if (capsCount > 5 || emojiCount >= 3) {
+                score += 20;  // BIG bonus for ALL CAPS + emoji spam
+                console.log("ALL CAPS + EMOJI SPAM detected! +20 points");
+            }
+
+            let finalPercent = score + Math.floor(Math.random() * 15);
+            if (finalPercent > 100) finalPercent = 67;
+            if (finalPercent < 5 && text.length > 0) finalPercent = Math.floor(Math.random() * 5) + 1;
+            // Hide input form, show RESULTS PAGE
+            document.getElementById("mainApp").innerHTML = `
+            <div class="zigzag"
+                style="height: 100vh;
+                background: url('thirdpg.jpg') center/cover;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                color: white;
+                position: relative;">
+
+            <div style="background: rgba(0,0,0,0.8); padding: 40px; border-radius: 20px; border: 3px solid #ff3333; max-width: 500px; box-shadow: 0 0 30px #ff3333;">
+                <h1 style="font-size: 2.5em; margin: 0 0 20px;">YOUR BRAINROT SCORE</h1>
+                <p style="font-size: 1.2em; margin: 0 0 30px; opacity: 0.9;">"${text}"</p>
+                <div style="font-size: 4em; color: #ff3333; font-weight: bold; margin: 20px 0; text-shadow: 0 0 20px #ff3333;">${finalPercent}%</div>
+                <p style="font-size: 1.3em; margin: 20px 0;">${getMessage(finalPercent)}</p>
+                <img src="${document.getElementById('chosenImage').src}" style="max-width: 200px; border-radius: 15px; margin: 20px 0; box-shadow: 0 0 20px rgba(255,51,51,0.5);">
+                <div style="margin: 30px 0;">
+                    <button onclick="location.reload()" style="padding: 15px 30px; font-size: 1.1em; background: #ff3333; color: white; border: none; border-radius: 25px; cursor: pointer; margin: 0 10px;">Try Again</button>
+                    <button onclick="shareResult('${finalPercent}', '${text}')" style="padding: 15px 30px; font-size: 1.1em; background: #333; color: white; border: none; border-radius: 25px; cursor: pointer; margin: 0 10px;">Share Score 💀</button>
+                </div>
+            </div>
+        </div>
+    `;
+
+            // Play audio if high score
+            const song = document.getElementById("brainrotTheme");
+            if (finalPercent >= 67) {
+                song.currentTime = 0;
+                song.play();
+            } else {
+                song.pause();
+            }
+        }
+
+        // Add share function
+        function shareResult(percent, text) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Brainrot Score',
+                    text: `"${text}" = ${percent}% brainrot 💀`,
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(`"${text}" has ${percent}% brainrot! ${window.location.href}`);
+                alert('Link copied! Share your zero aura 💀');
+            }
+        }
+
+        const song = document.getElementById("brainrotTheme");
+
+
+        if (finalPercent >= 67) {
+            song.currentTime = 0;
+            song.play();
+        } else {
+            song.pause();
+        }
+
+        // Optional: Add funny messages based on the score
+        function getMessage(percent) {
+            if (percent == 67) return "MAX BRAINROT TOUCH SOME GRASS BROO UGHH";
+            if (percent > 80) return "BRO SEEK HELP 💀";
+            if (percent > 70) return "BRO I LOWKENUINELY WORRY FOR YOU XD 😂😂😂✌️✌️✌️";
+            if (percent > 60) return "bro starts to reach flow state";
+            if (percent > 50) return "uhh GET A JOB 😂😂✌️✌️";
+            if (percent > 40) return "Your aura is leaking 😂😂✌️✌️";
+            if (percent > 30) return "you're not funny 😂✌️";
+            if (percent > 20) return "you're not learning enough 😂✌️😂✌️";
+            return "BRUHHH GET OUT you have non-existent rizz 😂✌️😂✌️😂✌️😂✌️";
+        }
+
+    </script>
+
+</body>
+
+</html>
